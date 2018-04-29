@@ -1898,13 +1898,23 @@ void SolverPlugin::apply_weight_onto_hit_corners()
 		UV = mesh_soup_V;
 
 	Vec3 origin = Vec3(0., 0., 20.);
+
+  #ifdef NO_OPENMP
+	int threads = 1;
+  #else
 	int threads = omp_get_max_threads();
+  #endif
+
 	vector<list<pair<int, double>>> hits = vector<list<pair<int, double>>>(threads, list<pair<int, double>>());
 	Vec2 c = projected_xh;
 #pragma omp parallel for num_threads(threads)
 	for (int i = 0; i < UV.rows(); ++i)
 	{
+    #ifdef NO_OPENMP
+		int tid = 0;
+    #else
 		int tid = omp_get_thread_num();
+    #endif
 		Vec3 q = UV.row(i);
 		if ((q(0) - c(0))*(q(0) - c(0)) + (q(1) - c(1))*(q(1) - c(1)) - xh_radius*xh_radius < 0)
 		{

@@ -7,8 +7,13 @@ using namespace igl::viewer;
 
 int main(int argc, char** argv)
 {
+
+
+  #ifdef NO_OPENMP
+  #else
 	unsigned int num_threads = max(atoi(getenv("OMP_NUM_THREADS")), 1);
 	omp_set_num_threads(num_threads);
+  #endif
 
 	Viewer viewer;
 	viewer.callback_init = [&](Viewer& v) {

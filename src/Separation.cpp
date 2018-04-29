@@ -132,11 +132,25 @@ void Separation::gradient(const MatX2& X, Vec& g)
 void Separation::hessian(const MatX2& X)
 {
 	int n = X.rows();
+
+
+  #ifdef NO_OPENMP
+	int threads = 1;
+  #else
 	int threads = omp_get_max_threads();
+  #endif
+
+
 #pragma omp parallel for num_threads(threads)
 	for (int i = 0; i < Esept.outerSize(); ++i)
 	{ // no inner loop because there are only 2 nnz values per col
+
+    #ifdef NO_OPENMP
+		int tid = 0;
+    #else
 		int tid = omp_get_thread_num();
+    #endif
+
 		Vec2 xi, xj;
 		Mat4 sh;
 		int idx_xi, idx_xj, factor;

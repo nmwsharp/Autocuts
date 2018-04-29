@@ -73,14 +73,23 @@ void BBox::value(const MatX2& X, double& f)
 
 	missed_limit = MatX2::Zero(X.rows(), X.cols());
 
+  #ifdef NO_OPENMP
+	int threads = 1;
+  #else
 	int threads = omp_get_max_threads();
+  #endif
+
 	Vec f_per_thread = Vec::Zero(threads);
 	Vec fmax_per_thread = Vec::Zero(threads);
 
 	#pragma omp parallel for num_threads(threads)
 	for (int i = 0; i < X.rows(); ++i)
 	{
+    #ifdef NO_OPENMP
+		int tid = 0;
+    #else
 		int tid = omp_get_thread_num();
+    #endif
 
 		RVec vert = X.row(i);
 
@@ -116,7 +125,14 @@ void BBox::gradient(const MatX2& X, Vec& g)
 	}
 
 	MatX2 ge = MatX2::Zero(X.rows(), X.cols());
+
+  #ifdef NO_OPENMP
+	int threads = 1;
+  #else
 	int threads = omp_get_max_threads();
+  #endif
+
+
 	#pragma omp parallel for num_threads(threads)
 	for (int i = 0; i < X.rows(); ++i)
 	{
@@ -145,7 +161,13 @@ void BBox::hessian(const MatX2& X)
 		return;
 
 	int n = X.rows();
+
+  #ifdef NO_OPENMP
+	int threads = 1;
+  #else
 	int threads = omp_get_max_threads();
+  #endif
+
 #pragma omp parallel for num_threads(threads)
 	for (int i = 0; i < X.rows(); ++i)
 	{

@@ -65,6 +65,8 @@ message("libigl definitions: ${LIBIGL_DEFINITIONS}")
 OPTION (USE_OpenMP "Use OpenMP" ON)
 IF(USE_OpenMP)
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
+ELSE()
+  add_definitions(-DNO_OPENMP)
 ENDIF()
 
 set(SRCFILES
