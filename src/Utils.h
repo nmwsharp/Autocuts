@@ -251,7 +251,7 @@ public:
 		unsigned int ic_k_c = Ic_K.cols();
 
 		// find t(i,j) == 2 and replace with #cols of Ic_G into e2ev
-		SpMati t = (Ic_G.transpose() * V2V * Ic_K);
+		SpMati t = (Ic_G.transpose() * V2V.cast<int>() * Ic_K);
 		unsigned int tr = t.rows();
 		vector<int> v;
 		for (int i = 0; i < t.outerSize(); ++i) {
