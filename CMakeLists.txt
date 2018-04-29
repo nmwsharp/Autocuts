@@ -1,6 +1,4 @@
 cmake_minimum_required(VERSION 3.0)
-SET(CMAKE_C_COMPILER /usr/local/Cellar/llvm/5.0.0/bin/clang)
-SET(CMAKE_CXX_COMPILER /usr/local/Cellar/llvm/5.0.0/bin/clang++)
 
 project(Autocuts)
 
