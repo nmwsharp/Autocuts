@@ -11,7 +11,7 @@ int main(int argc, char** argv)
 
   #ifdef NO_OPENMP
   #else
-	unsigned int num_threads = max(atoi(getenv("OMP_NUM_THREADS")), 1);
+	unsigned int num_threads = 4;
 	omp_set_num_threads(num_threads);
   #endif
 
